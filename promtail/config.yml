@@ -31,3 +31,13 @@ scrape_configs:
         labels:
           job: pm2
           __path__: /var/log/pm2/*.log
+    relabel_configs:
+      - source_labels: [__path__]
+        target_label: filename
+    pipeline_stages:
+      - regex:
+          source: filename
+          expression: '/var/log/pm2/(?P<application>.*)-(?P<stream>out|error)(?:-[0-9]+)?\.log'
+      - labels:
+          application:
+          stream:
