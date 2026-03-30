@@ -53,7 +53,3 @@ Puis configure Nginx pour proxifier vers `http://127.0.0.1:5000`.
 ## Identifiants par défaut
 
 - Grafana : `admin` / `admin`
-
-## Notes
-
-- `promtail` lit les logs Docker via `/var/run/docker.sock`, ce qui vise un hôte Linux.
