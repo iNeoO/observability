@@ -39,6 +39,17 @@ docker compose up -d
 - Prometheus : http://localhost:5001
 - Loki : http://localhost:5002
 
+## Reverse Proxy
+
+Pour exposer Grafana derrière Nginx, définis dans `.env` :
+
+```bash
+GRAFANA_DOMAIN=grafana.example.com
+GRAFANA_ROOT_URL=https://grafana.example.com
+```
+
+Puis configure Nginx pour proxifier vers `http://127.0.0.1:5000`.
+
 ## Identifiants par défaut
 
 - Grafana : `admin` / `admin`
