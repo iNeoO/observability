@@ -10,6 +10,8 @@ services:
       - "5001:9090"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    networks:
+      - observability
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus-data:/prometheus
@@ -21,6 +23,8 @@ services:
     command: -config.file=/etc/loki/config.yml
     ports:
       - "5002:3100"
+    networks:
+      - observability
     volumes:
       - ./loki/config.yml:/etc/loki/config.yml:ro
       - loki-data:/loki
@@ -30,6 +34,8 @@ services:
     image: grafana/promtail:3.1.1
     container_name: observability-promtail
     command: -config.file=/etc/promtail/config.yml
+    networks:
+      - observability
     volumes:
       - ./promtail/config.yml:/etc/promtail/config.yml:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
@@ -49,6 +55,8 @@ services:
       GF_USERS_ALLOW_SIGN_UP: "false"
       GF_SERVER_DOMAIN: ${GRAFANA_DOMAIN:-localhost}
       GF_SERVER_ROOT_URL: ${GRAFANA_ROOT_URL:-http://localhost:5000}
+    networks:
+      - observability
     volumes:
       - grafana-data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
@@ -62,3 +70,10 @@ volumes:
   prometheus-data:
   loki-data:
   grafana-data:
+
+networks:
+  observability:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
