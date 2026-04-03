@@ -7,7 +7,7 @@ services:
       - --storage.tsdb.path=/prometheus
       - --web.enable-lifecycle
     ports:
-      - "5001:9090"
+      - "127.0.0.1:5001:9090"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
@@ -22,7 +22,7 @@ services:
     container_name: observability-loki
     command: -config.file=/etc/loki/config.yml
     ports:
-      - "5002:3100"
+      - "127.0.0.1:5002:3100"
     networks:
       - observability
     volumes:
@@ -49,7 +49,7 @@ services:
     image: grafana/grafana:11.1.4
     container_name: observability-grafana
     ports:
-      - "5000:3000"
+      - "127.0.0.1:5000:3000"
     environment:
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
