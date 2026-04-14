@@ -678,7 +678,7 @@
   ],
   "refresh": "30s",
   "schemaVersion": 39,
-  "tags": ["pm2", "nuxt", "application"],
+  "tags": [],
   "templating": {
     "list": [
       {

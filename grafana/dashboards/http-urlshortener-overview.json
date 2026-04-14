@@ -70,7 +70,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum by (route) (rate(http_requests_total{job=\"backend\",route!=\"/metrics\"}[5m]))",
+          "expr": "sum by (route) (rate(http_requests_total{job=\"backend-urlshortener\",route!=\"/metrics\"}[5m]))",
           "legendFormat": "{{route}}",
           "range": true,
           "refId": "A"
@@ -134,7 +134,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "100 * (sum(rate(http_requests_total{job=\"backend\",status=~\"5..\",route!=\"/metrics\"}[5m])) / clamp_min(sum(rate(http_requests_total{job=\"backend\",route!=\"/metrics\"}[5m])), 0.0001))",
+          "expr": "100 * (sum(rate(http_requests_total{job=\"backend-urlshortener\",status=~\"5..\",route!=\"/metrics\"}[5m])) / clamp_min(sum(rate(http_requests_total{job=\"backend-urlshortener\",route!=\"/metrics\"}[5m])), 0.0001))",
           "refId": "A"
         }
       ],
@@ -196,7 +196,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{job=\"backend\",route!=\"/metrics\"}[5m])))",
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{job=\"backend-urlshortener\",route!=\"/metrics\"}[5m])))",
           "refId": "A"
         }
       ],
@@ -241,7 +241,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "topk(5, sum by (route) (rate(http_requests_total{job=\"backend\",route!=\"/metrics\"}[5m])))",
+          "expr": "topk(5, sum by (route) (rate(http_requests_total{job=\"backend-urlshortener\",route!=\"/metrics\"}[5m])))",
           "legendFormat": "{{route}}",
           "refId": "A"
         }
@@ -298,7 +298,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum by (route) (rate(http_requests_total{job=\"redirector\",route!=\"/metrics\"}[5m]))",
+          "expr": "sum by (route) (rate(http_requests_total{job=\"redirector-urlshortener\",route!=\"/metrics\"}[5m]))",
           "legendFormat": "{{route}}",
           "range": true,
           "refId": "A"
@@ -362,7 +362,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "100 * (sum(rate(http_requests_total{job=\"redirector\",status=~\"5..\",route!=\"/metrics\"}[5m])) / clamp_min(sum(rate(http_requests_total{job=\"redirector\",route!=\"/metrics\"}[5m])), 0.0001))",
+          "expr": "100 * (sum(rate(http_requests_total{job=\"redirector-urlshortener\",status=~\"5..\",route!=\"/metrics\"}[5m])) / clamp_min(sum(rate(http_requests_total{job=\"redirector-urlshortener\",route!=\"/metrics\"}[5m])), 0.0001))",
           "refId": "A"
         }
       ],
@@ -424,7 +424,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{job=\"redirector\",route!=\"/metrics\"}[5m])))",
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{job=\"redirector-urlshortener\",route!=\"/metrics\"}[5m])))",
           "refId": "A"
         }
       ],
@@ -469,7 +469,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "topk(5, sum by (route) (rate(http_requests_total{job=\"redirector\",route!=\"/metrics\"}[5m])))",
+          "expr": "topk(5, sum by (route) (rate(http_requests_total{job=\"redirector-urlshortener\",route!=\"/metrics\"}[5m])))",
           "legendFormat": "{{route}}",
           "refId": "A"
         }
@@ -602,7 +602,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum by (queue) (rabbitmq_queue_messages_ready{job=\"rabbitmq\",queue!~\"^amq\\\\..*\"})",
+          "expr": "sum by (queue) (rabbitmq_queue_messages_ready{job=\"rabbitmq-urlshortener\",queue!~\"^amq\\\\..*\"})",
           "legendFormat": "{{queue}}",
           "range": true,
           "refId": "A"
@@ -647,7 +647,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum by (queue) (rabbitmq_queue_messages_unacked{job=\"rabbitmq\",queue!~\"^amq\\\\..*\"})",
+          "expr": "sum by (queue) (rabbitmq_queue_messages_unacked{job=\"rabbitmq-urlshortener\",queue!~\"^amq\\\\..*\"})",
           "legendFormat": "{{queue}}",
           "range": true,
           "refId": "A"
@@ -692,7 +692,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum by (queue) (rabbitmq_queue_consumers{job=\"rabbitmq\",queue!~\"^amq\\\\..*\"})",
+          "expr": "sum by (queue) (rabbitmq_queue_consumers{job=\"rabbitmq-urlshortener\",queue!~\"^amq\\\\..*\"})",
           "legendFormat": "{{queue}}",
           "range": true,
           "refId": "A"
@@ -737,7 +737,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "up{job=\"rabbitmq\"}",
+          "expr": "up{job=\"rabbitmq-urlshortener\"}",
           "legendFormat": "{{instance}}",
           "range": true,
           "refId": "A"
@@ -750,12 +750,7 @@
   "refresh": "10s",
   "schemaVersion": 39,
   "style": "dark",
-  "tags": [
-    "hono",
-    "http",
-    "backend",
-    "redirector"
-  ],
+  "tags": [],
   "templating": {
     "list": []
   },
@@ -765,8 +760,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Urlshortener",
-  "uid": "http-services-overview",
+  "title": "HTTP URL Shortener Overview",
+  "uid": "http-urlshortener-overview",
   "version": 1,
   "weekStart": ""
 }

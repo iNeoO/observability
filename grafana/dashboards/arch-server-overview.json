@@ -636,11 +636,7 @@
   "refresh": "30s",
   "schemaVersion": 39,
   "style": "dark",
-  "tags": [
-    "arch",
-    "linux",
-    "node-exporter"
-  ],
+  "tags": [],
   "templating": {
     "list": [
       {
