@@ -67,7 +67,7 @@ scrape_configs:
           - host.docker.internal:3010
 
   - job_name: manga-reader
-    metrics_path: /metrics
+    metrics_path: /api/metrics
     static_configs:
       - targets:
-          - host.docker.internal:4020
+          - manga-reader-backend-prod:4030
