@@ -749,7 +749,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rabbitmq_detailed_queue_messages{job=\"rabbitmq-ocr\",queue=~\"$queue\"})",
+          "expr": "sum(rabbitmq_queue_messages{job=\"rabbitmq-ocr\",queue=~\"$queue\"}) or vector(0)",
           "legendFormat": "",
           "range": true,
           "refId": "A"
@@ -819,7 +819,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rabbitmq_detailed_queue_messages_ready{job=\"rabbitmq-ocr\",queue=~\"$queue\"})",
+          "expr": "sum(rabbitmq_queue_messages_ready{job=\"rabbitmq-ocr\",queue=~\"$queue\"}) or vector(0)",
           "legendFormat": "",
           "range": true,
           "refId": "A"
@@ -889,7 +889,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rabbitmq_detailed_queue_messages_unacked{job=\"rabbitmq-ocr\",queue=~\"$queue\"})",
+          "expr": "sum(rabbitmq_queue_messages_unacked{job=\"rabbitmq-ocr\",queue=~\"$queue\"}) or vector(0)",
           "legendFormat": "",
           "range": true,
           "refId": "A"
@@ -959,7 +959,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rabbitmq_detailed_queue_consumers{job=\"rabbitmq-ocr\",queue=~\"$queue\"})",
+          "expr": "sum(rabbitmq_queue_consumers{job=\"rabbitmq-ocr\",queue=~\"$queue\"}) or vector(0)",
           "legendFormat": "",
           "range": true,
           "refId": "A"
@@ -1042,7 +1042,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rabbitmq_detailed_queue_messages_ready{job=\"rabbitmq-ocr\",queue=~\"$queue\"}",
+          "expr": "rabbitmq_queue_messages_ready{job=\"rabbitmq-ocr\",queue=~\"$queue\"}",
           "legendFormat": "{{queue}} ready",
           "range": true,
           "refId": "A"
@@ -1053,7 +1053,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rabbitmq_detailed_queue_messages_unacked{job=\"rabbitmq-ocr\",queue=~\"$queue\"}",
+          "expr": "rabbitmq_queue_messages_unacked{job=\"rabbitmq-ocr\",queue=~\"$queue\"}",
           "legendFormat": "{{queue}} unacked",
           "range": true,
           "refId": "B"
@@ -1136,7 +1136,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rabbitmq_detailed_queue_consumers{job=\"rabbitmq-ocr\",queue=~\"$queue\"}",
+          "expr": "rabbitmq_queue_consumers{job=\"rabbitmq-ocr\",queue=~\"$queue\"}",
           "legendFormat": "{{queue}}",
           "range": true,
           "refId": "A"
@@ -1196,7 +1196,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rabbitmq_detailed_queue_messages{job=\"rabbitmq-ocr\",queue=~\"$queue\"}",
+          "expr": "rabbitmq_queue_messages{job=\"rabbitmq-ocr\",queue=~\"$queue\"}",
           "format": "table",
           "instant": true,
           "range": false,
@@ -1208,7 +1208,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rabbitmq_detailed_queue_messages_ready{job=\"rabbitmq-ocr\",queue=~\"$queue\"}",
+          "expr": "rabbitmq_queue_messages_ready{job=\"rabbitmq-ocr\",queue=~\"$queue\"}",
           "format": "table",
           "instant": true,
           "range": false,
@@ -1220,7 +1220,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rabbitmq_detailed_queue_messages_unacked{job=\"rabbitmq-ocr\",queue=~\"$queue\"}",
+          "expr": "rabbitmq_queue_messages_unacked{job=\"rabbitmq-ocr\",queue=~\"$queue\"}",
           "format": "table",
           "instant": true,
           "range": false,
@@ -1232,7 +1232,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rabbitmq_detailed_queue_consumers{job=\"rabbitmq-ocr\",queue=~\"$queue\"}",
+          "expr": "rabbitmq_queue_consumers{job=\"rabbitmq-ocr\",queue=~\"$queue\"}",
           "format": "table",
           "instant": true,
           "range": false,
@@ -1759,6 +1759,56 @@
       ],
       "title": "Frontend Scrape Duration",
       "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 55
+      },
+      "id": 103,
+      "panels": [],
+      "title": "Logs",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 56
+      },
+      "id": 22,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": true,
+        "showCommonLabels": false,
+        "showLabels": true,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "editorMode": "code",
+          "expr": "{container=~\"ocr-(backend|frontend|split-pdf-worker|transcribe-jpg-worker|post-process-page-worker|cleanup-process-worker)-prod\"} | json",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Application Logs",
+      "type": "logs"
     }
   ],
   "refresh": "30s",
@@ -1782,7 +1832,7 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(rabbitmq_detailed_queue_messages{job=\"rabbitmq-ocr\"}, queue)",
+        "definition": "label_values(rabbitmq_queue_messages{job=\"rabbitmq-ocr\"}, queue)",
         "hide": 0,
         "includeAll": true,
         "label": "Queue",
@@ -1791,7 +1841,7 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(rabbitmq_detailed_queue_messages{job=\"rabbitmq-ocr\"}, queue)",
+          "query": "label_values(rabbitmq_queue_messages{job=\"rabbitmq-ocr\"}, queue)",
           "refId": "Prometheus-queue-Variable"
         },
         "refresh": 2,

@@ -12,6 +12,7 @@ services:
       - "host.docker.internal:host-gateway"
     networks:
       - observability
+      - monitoring-shared
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus-data:/prometheus
@@ -78,3 +79,6 @@ networks:
     ipam:
       config:
         - subnet: 172.30.0.0/24
+  monitoring-shared:
+    name: monitoring-shared
+    external: true

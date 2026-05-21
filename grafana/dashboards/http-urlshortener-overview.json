@@ -507,7 +507,7 @@
             "uid": "loki"
           },
           "editorMode": "builder",
-          "expr": "{service=~\"backend|redirector\"} |= ``",
+          "expr": "{compose_project=\"urlshortener\",service=~\"backend|redirector\"} | json | req_url != \"/metrics\"",
           "queryType": "range",
           "refId": "A"
         }
@@ -545,7 +545,7 @@
             "uid": "loki"
           },
           "editorMode": "builder",
-          "expr": "{service=~\"notification-mail-worker|stats-events-worker|stats-aggregate-worker\"} |= ``",
+          "expr": "{compose_project=\"urlshortener\",service=~\"notification-mail-worker|stats-events-worker|stats-aggregate-worker\"} | json",
           "queryType": "range",
           "refId": "A"
         }

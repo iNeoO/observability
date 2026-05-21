@@ -126,7 +126,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate(manga_reader_http_requests_total{job=\"manga-reader\",route!=\"/metrics\"}[$__rate_interval]))",
+          "expr": "sum(rate(manga_reader_http_requests_total{job=\"manga-reader\",route!~\"/(api/)?metrics\"}[$__rate_interval]))",
           "legendFormat": "",
           "range": true,
           "refId": "A"
@@ -196,7 +196,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum by (le) (rate(manga_reader_http_request_duration_ms_bucket{job=\"manga-reader\",route!=\"/metrics\"}[$__rate_interval])))",
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(manga_reader_http_request_duration_ms_bucket{job=\"manga-reader\",route!~\"/(api/)?metrics\"}[$__rate_interval])))",
           "legendFormat": "",
           "range": true,
           "refId": "A"
@@ -266,7 +266,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate(manga_reader_http_errors_total{job=\"manga-reader\",route!=\"/metrics\"}[$__rate_interval])) / clamp_min(sum(rate(manga_reader_http_requests_total{job=\"manga-reader\",route!=\"/metrics\"}[$__rate_interval])), 0.0001)",
+          "expr": "sum(rate(manga_reader_http_errors_total{job=\"manga-reader\",route!~\"/(api/)?metrics\"}[$__rate_interval])) / clamp_min(sum(rate(manga_reader_http_requests_total{job=\"manga-reader\",route!~\"/(api/)?metrics\"}[$__rate_interval])), 0.0001)",
           "legendFormat": "",
           "range": true,
           "refId": "A"
@@ -410,7 +410,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (route) (rate(manga_reader_http_requests_total{job=\"manga-reader\",route!=\"/metrics\"}[$__rate_interval]))",
+          "expr": "sum by (route) (rate(manga_reader_http_requests_total{job=\"manga-reader\",route!~\"/(api/)?metrics\"}[$__rate_interval]))",
           "legendFormat": "{{route}}",
           "range": true,
           "refId": "A"
@@ -492,7 +492,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum by (le, route) (rate(manga_reader_http_request_duration_ms_bucket{job=\"manga-reader\",route!=\"/metrics\"}[$__rate_interval])))",
+          "expr": "histogram_quantile(0.95, sum by (le, route) (rate(manga_reader_http_request_duration_ms_bucket{job=\"manga-reader\",route!~\"/(api/)?metrics\"}[$__rate_interval])))",
           "legendFormat": "{{route}}",
           "range": true,
           "refId": "A"
@@ -573,7 +573,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (status_class) (rate(manga_reader_http_requests_total{job=\"manga-reader\",route!=\"/metrics\"}[$__rate_interval]))",
+          "expr": "sum by (status_class) (rate(manga_reader_http_requests_total{job=\"manga-reader\",route!~\"/(api/)?metrics\"}[$__rate_interval]))",
           "legendFormat": "{{status_class}}",
           "range": true,
           "refId": "A"
@@ -695,7 +695,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (exception_name) (rate(manga_reader_http_errors_total{job=\"manga-reader\",route!=\"/metrics\"}[$__rate_interval]))",
+          "expr": "sum by (exception_name) (rate(manga_reader_http_errors_total{job=\"manga-reader\",route!~\"/(api/)?metrics\"}[$__rate_interval]))",
           "legendFormat": "{{exception_name}}",
           "range": true,
           "refId": "A"
@@ -746,7 +746,7 @@
             "uid": "loki"
           },
           "editorMode": "code",
-          "expr": "{service=\"backend\"}",
+          "expr": "{compose_project=\"manga-reader\",service=\"backend\"} | json | route != \"/api/metrics\"",
           "queryType": "range",
           "refId": "A"
         }

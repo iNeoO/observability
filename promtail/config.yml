@@ -19,10 +19,85 @@ scrape_configs:
         target_label: 'container'
       - source_labels: ['__meta_docker_container_log_stream']
         target_label: 'stream'
+      - source_labels: ['__meta_docker_container_label_com_docker_compose_project']
+        target_label: 'compose_project'
       - source_labels: ['__meta_docker_container_label_com_docker_compose_service']
         target_label: 'service'
     pipeline_stages:
       - docker: {}
+      - json:
+          expressions:
+            level: level
+            msg: msg
+            context: context
+            from: from
+            req_id: reqId
+            request_id: requestId
+            method: method
+            req_method: req.method
+            path: path
+            url: url
+            req_url: req.url
+            route: route
+            status_code: statusCode
+            status_class: statusClass
+            response_status: res.status
+            response_time_ms: responseTime
+            duration_ms: durationMs
+            user_agent: userAgent
+            ip: ip
+            authenticated: authenticated
+            user_id: userId
+            referer: referer
+            content_length: contentLength
+            exception_name: exceptionName
+            error_message: errorMessage
+            manga_id: mangaId
+            uploaded_keys_count: uploadedKeysCount
+            stack: stack
+            trpc_path: trpc.path
+            trpc_type: trpc.type
+            err_type: err.type
+            err_name: err.name
+            err_code: err.code
+            err_message: err.message
+            err_stack: err.stack
+      - labels:
+          level:
+          context:
+          from:
+          method:
+          req_method:
+          status_class:
+          exception_name:
+          trpc_type:
+          err_code:
+      - structured_metadata:
+          req_id:
+          request_id:
+          path:
+          url:
+          req_url:
+          route:
+          status_code:
+          response_status:
+          response_time_ms:
+          duration_ms:
+          user_agent:
+          ip:
+          authenticated:
+          user_id:
+          referer:
+          content_length:
+          error_message:
+          manga_id:
+          uploaded_keys_count:
+          stack:
+          trpc_path:
+          err_type:
+          err_name:
+          err_message:
+          err_stack:
 
   - job_name: pm2
     static_configs:
