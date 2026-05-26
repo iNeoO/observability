@@ -55,7 +55,7 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 6,
+        "w": 5,
         "x": 0,
         "y": 0
       },
@@ -81,9 +81,9 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\",instance=~\"$instance\"}[5m])) * 100)",
+          "expr": "100 * sum by (instance) (rate(node_cpu_seconds_total{mode!=\"idle\",mode!=\"iowait\",instance=~\"$instance\"}[5m])) / sum by (instance) (rate(node_cpu_seconds_total{instance=~\"$instance\"}[5m]))",
           "legendFormat": "{{instance}}",
-          "range": true,
+          "range": false,
           "refId": "A"
         }
       ],
@@ -123,8 +123,8 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 6,
-        "x": 6,
+        "w": 5,
+        "x": 5,
         "y": 0
       },
       "id": 2,
@@ -166,6 +166,74 @@
             "mode": "thresholds"
           },
           "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 10,
+        "y": 0
+      },
+      "id": 9,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.1.4",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "100 * max by (instance) (1 - (node_filesystem_avail_bytes{instance=~\"$instance\",fstype!~\"tmpfs|fuse.lxcfs|overlay\",mountpoint!~\"/run.*|/var/lib/docker.*\"} / node_filesystem_size_bytes{instance=~\"$instance\",fstype!~\"tmpfs|fuse.lxcfs|overlay\",mountpoint!~\"/run.*|/var/lib/docker.*\"}))",
+          "legendFormat": "{{instance}}",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Disk Usage",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -185,8 +253,8 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 6,
-        "x": 12,
+        "w": 4,
+        "x": 15,
         "y": 0
       },
       "id": 3,
@@ -243,8 +311,8 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 6,
-        "x": 18,
+        "w": 5,
+        "x": 19,
         "y": 0
       },
       "id": 4,
@@ -354,8 +422,8 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "100 - (avg by (cpu) (rate(node_cpu_seconds_total{mode=\"idle\",instance=~\"$instance\"}[5m])) * 100)",
-          "legendFormat": "cpu{{cpu}}",
+          "expr": "100 * sum by (instance, cpu) (rate(node_cpu_seconds_total{mode!=\"idle\",mode!=\"iowait\",instance=~\"$instance\"}[5m])) / sum by (instance, cpu) (rate(node_cpu_seconds_total{instance=~\"$instance\"}[5m]))",
+          "legendFormat": "{{instance}} cpu{{cpu}}",
           "range": true,
           "refId": "A"
         }

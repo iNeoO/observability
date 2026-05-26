@@ -38,7 +38,7 @@ It includes pre-provisioned Grafana datasources and dashboards for the services 
 Prometheus is configured to scrape:
 
 - The observability stack itself: Prometheus, Grafana, and Loki
-- Host-level metrics from Node Exporter on `host.docker.internal:9100`
+- Host-level metrics from the bundled `node-exporter` service
 - PM2 metrics on `host.docker.internal:9209`
 - RabbitMQ metrics for:
   - `urlshortener` on `host.docker.internal:15692`
@@ -59,11 +59,17 @@ Promtail collects:
 
 PM2 logs are labeled by application name and stream (`out` or `error`) before being shipped to Loki.
 
+## Retention Policy
+
+- Prometheus metrics are retained for 15 days.
+- Loki logs are retained for 7 days by default.
+- Error logs are retained for 30 days when they are labeled with `stream="stderr"`, `stream="error"`, `level="error"`, `level="fatal"`, `level="critical"`, or a numeric `level` in the `50-59` range.
+- Grafana metadata and dashboard state are retained in the `grafana-data` volume until manually removed.
+
 ## Prerequisites
 
 - Docker
 - Docker Compose v2
-- A running Node Exporter on the host if you want host dashboards to work
 - A running PM2 metrics exporter on the host if you want PM2 dashboards to work
 - The monitored applications exposing Prometheus-compatible `/metrics` endpoints
 
