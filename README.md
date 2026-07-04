@@ -32,6 +32,7 @@ It includes pre-provisioned Grafana datasources and dashboards for the services 
 - `HTTP URL Shortener Overview`
 - `OCR Observability`
 - `Manga Reader Backend`
+- `Infra Overview (RabbitMQ / Redis / Garage)`
 
 ## Metrics Targets
 
@@ -40,15 +41,27 @@ Prometheus is configured to scrape:
 - The observability stack itself: Prometheus, Grafana, and Loki
 - Host-level metrics from the bundled `node-exporter` service
 - PM2 metrics on `host.docker.internal:9209`
-- RabbitMQ metrics for:
-  - `urlshortener` on `host.docker.internal:15692`
-  - `ocr` on `host.docker.internal:15693`
+- Shared infra metrics from the [`infra`](../infra) stack, over the `monitoring-shared` network:
+  - RabbitMQ on `rabbitmq-prod:15692`
+  - Redis (via `redis_exporter`) on `redis-exporter-prod:9121`
+  - Garage on `garage-prod:3903` (bearer token, see `prometheus/secrets/`)
 - Application metrics for:
-  - `urlshortener` backend on `host.docker.internal:4000`
-  - `urlshortener` redirector on `host.docker.internal:4001`
-  - `ocr` backend on `host.docker.internal:4010`
-  - `ocr` frontend on `host.docker.internal:3010`
-  - `manga-reader` on `host.docker.internal:4020`
+  - `urlshortener` backend on `urlshortener-backend-prod:4000`
+  - `urlshortener` redirector on `urlshortener-redirector-prod:4001`
+  - `ocr` backend on `ocr-backend-prod:4010`
+  - `ocr` frontend on `ocr-frontend-prod:3010`
+  - `manga-reader` on `manga-reader-backend-prod:4030`
+
+### Garage metrics token
+
+The Garage scrape job authenticates with a bearer token read from
+`prometheus/secrets/garage-metrics-token` (gitignored). Copy the
+`metrics_token` value configured in `../infra/garage/garage.toml` into that
+file, then reload Prometheus:
+
+```bash
+docker compose kill -s SIGHUP prometheus
+```
 
 ## Logs Collection
 

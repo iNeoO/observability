@@ -2,3 +2,4 @@
 .DS_Store
 data/
 .codex
+prometheus/secrets/garage-metrics-token

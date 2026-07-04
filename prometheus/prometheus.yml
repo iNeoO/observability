@@ -30,17 +30,25 @@ scrape_configs:
       - targets:
           - host.docker.internal:9209
 
-  - job_name: rabbitmq-urlshortener
+  - job_name: rabbitmq
     metrics_path: /metrics
     static_configs:
       - targets:
-          - urlshortener-rabbitmq-prod:15692
+          - rabbitmq-prod:15692
 
-  - job_name: rabbitmq-ocr
-    metrics_path: /metrics/per-object
+  - job_name: redis
+    metrics_path: /metrics
     static_configs:
       - targets:
-          - ocr-rabbitmq-prod:15692
+          - redis-exporter-prod:9121
+
+  - job_name: garage
+    metrics_path: /metrics
+    authorization:
+      credentials_file: /etc/prometheus/secrets/garage-metrics-token
+    static_configs:
+      - targets:
+          - garage-prod:3903
 
   - job_name: backend-urlshortener
     metrics_path: /metrics

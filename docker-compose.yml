@@ -16,6 +16,7 @@ services:
       - monitoring-shared
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/secrets:/etc/prometheus/secrets:ro
       - prometheus-data:/prometheus
     depends_on:
       - node-exporter
