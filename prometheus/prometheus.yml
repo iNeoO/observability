@@ -62,13 +62,7 @@ scrape_configs:
       - targets:
           - urlshortener-redirector-prod:4001
 
-  - job_name: ocr-backend
-    metrics_path: /metrics
-    static_configs:
-      - targets:
-          - ocr-backend-prod:4010
-
-  - job_name: ocr-frontend
+  - job_name: ocr
     metrics_path: /metrics
     static_configs:
       - targets:
