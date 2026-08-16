@@ -166,7 +166,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate(ocr_frontend_http_request_duration_seconds_count{job=\"ocr\",route!=\"/metrics\"}[$__rate_interval]))",
+          "expr": "sum(rate(ocr_web_http_request_duration_seconds_count{job=\"ocr\",route!=\"/metrics\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "",
           "range": true,
@@ -232,7 +232,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate(ocr_frontend_http_request_duration_seconds_count{job=\"ocr\",status_class=\"5xx\",route!=\"/metrics\"}[$__rate_interval])) / clamp_min(sum(rate(ocr_frontend_http_request_duration_seconds_count{job=\"ocr\",route!=\"/metrics\"}[$__rate_interval])), 0.0001)",
+          "expr": "sum(rate(ocr_web_http_request_duration_seconds_count{job=\"ocr\",status_class=\"5xx\",route!=\"/metrics\"}[$__rate_interval])) / clamp_min(sum(rate(ocr_web_http_request_duration_seconds_count{job=\"ocr\",route!=\"/metrics\"}[$__rate_interval])), 0.0001)",
           "instant": false,
           "legendFormat": "",
           "range": true,
@@ -298,7 +298,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum by (le) (rate(ocr_frontend_http_request_duration_seconds_bucket{job=\"ocr\",route!=\"/metrics\"}[$__rate_interval])))",
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(ocr_web_http_request_duration_seconds_bucket{job=\"ocr\",route!=\"/metrics\"}[$__rate_interval])))",
           "instant": false,
           "legendFormat": "",
           "range": true,
@@ -393,7 +393,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (route, status_class) (rate(ocr_frontend_http_request_duration_seconds_count{job=\"ocr\",route!=\"/metrics\"}[$__rate_interval]))",
+          "expr": "sum by (route, status_class) (rate(ocr_web_http_request_duration_seconds_count{job=\"ocr\",route!=\"/metrics\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "{{route}} {{status_class}}",
           "range": true,
@@ -488,7 +488,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum by (route, le) (rate(ocr_frontend_http_request_duration_seconds_bucket{job=\"ocr\",route!=\"/metrics\"}[$__rate_interval])))",
+          "expr": "histogram_quantile(0.95, sum by (route, le) (rate(ocr_web_http_request_duration_seconds_bucket{job=\"ocr\",route!=\"/metrics\"}[$__rate_interval])))",
           "instant": false,
           "legendFormat": "{{route}}",
           "range": true,
@@ -567,7 +567,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate(ocr_frontend_server_fn_requests_total{job=\"ocr\",result=\"success\"}[$__rate_interval]))",
+          "expr": "sum(rate(ocr_web_server_fn_requests_total{job=\"ocr\",result=\"success\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "",
           "range": true,
@@ -633,7 +633,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate(ocr_frontend_server_fn_requests_total{job=\"ocr\",result=\"error\"}[$__rate_interval]))",
+          "expr": "sum(rate(ocr_web_server_fn_requests_total{job=\"ocr\",result=\"error\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "",
           "range": true,
@@ -699,7 +699,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(ocr_frontend_sse_streams_active{job=\"ocr\"})",
+          "expr": "sum(ocr_web_sse_streams_active{job=\"ocr\"})",
           "instant": false,
           "legendFormat": "",
           "range": true,
@@ -765,7 +765,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(increase(ocr_frontend_uploads_total{job=\"ocr\"}[1h]))",
+          "expr": "sum(increase(ocr_web_uploads_total{job=\"ocr\"}[1h]))",
           "instant": false,
           "legendFormat": "",
           "range": true,
@@ -860,7 +860,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (operation, result) (rate(ocr_frontend_server_fn_requests_total{job=\"ocr\"}[$__rate_interval]))",
+          "expr": "sum by (operation, result) (rate(ocr_web_server_fn_requests_total{job=\"ocr\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "{{operation}} {{result}}",
           "range": true,
@@ -955,7 +955,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum by (operation, le) (rate(ocr_frontend_server_fn_duration_seconds_bucket{job=\"ocr\"}[$__rate_interval])))",
+          "expr": "histogram_quantile(0.95, sum by (operation, le) (rate(ocr_web_server_fn_duration_seconds_bucket{job=\"ocr\"}[$__rate_interval])))",
           "instant": false,
           "legendFormat": "{{operation}}",
           "range": true,
@@ -1050,7 +1050,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (result) (rate(ocr_frontend_uploads_total{job=\"ocr\"}[$__rate_interval]))",
+          "expr": "sum by (result) (rate(ocr_web_uploads_total{job=\"ocr\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "uploads {{result}}",
           "range": true,
@@ -1062,7 +1062,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (result) (rate(ocr_frontend_downloads_total{job=\"ocr\"}[$__rate_interval]))",
+          "expr": "sum by (result) (rate(ocr_web_downloads_total{job=\"ocr\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "downloads {{result}}",
           "range": true,
@@ -1157,7 +1157,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum by (le) (rate(ocr_frontend_download_archive_bytes_bucket{job=\"ocr\"}[$__rate_interval])))",
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(ocr_web_download_archive_bytes_bucket{job=\"ocr\"}[$__rate_interval])))",
           "instant": false,
           "legendFormat": "p95 archive size",
           "range": true,
@@ -1252,7 +1252,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (stream, kind) (rate(ocr_frontend_sse_frames_total{job=\"ocr\"}[$__rate_interval]))",
+          "expr": "sum by (stream, kind) (rate(ocr_web_sse_frames_total{job=\"ocr\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "{{stream}} {{kind}} frames",
           "range": true,
@@ -1264,7 +1264,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (stream, reason) (rate(ocr_frontend_sse_streams_closed_total{job=\"ocr\"}[$__rate_interval]))",
+          "expr": "sum by (stream, reason) (rate(ocr_web_sse_streams_closed_total{job=\"ocr\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "{{stream}} {{reason}} closed",
           "range": true,
@@ -1276,7 +1276,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (stream) (rate(ocr_frontend_sse_frames_dropped_total{job=\"ocr\"}[$__rate_interval]))",
+          "expr": "sum by (stream) (rate(ocr_web_sse_frames_dropped_total{job=\"ocr\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "{{stream}} dropped",
           "range": true,
@@ -1343,7 +1343,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (operation, result, status_class) (increase(ocr_frontend_server_fn_requests_total{job=\"ocr\"}[$__range]))",
+          "expr": "sum by (operation, result, status_class) (increase(ocr_web_server_fn_requests_total{job=\"ocr\"}[$__range]))",
           "instant": true,
           "legendFormat": "",
           "range": false,
@@ -1411,7 +1411,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (__name__, result) (increase({job=\"ocr\",__name__=~\"ocr_frontend_(uploads|downloads|orphaned_file_cleanups)_total\"}[$__range]))",
+          "expr": "sum by (__name__, result) (increase({job=\"ocr\",__name__=~\"ocr_web_(uploads|downloads|orphaned_file_cleanups)_total\"}[$__range]))",
           "instant": true,
           "legendFormat": "",
           "range": false,
@@ -1520,7 +1520,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(ocr_frontend_process_cpu_user_seconds_total{job=\"ocr\"}[$__rate_interval])",
+          "expr": "rate(ocr_web_process_cpu_user_seconds_total{job=\"ocr\"}[$__rate_interval])",
           "instant": false,
           "legendFormat": "user",
           "range": true,
@@ -1532,7 +1532,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(ocr_frontend_process_cpu_system_seconds_total{job=\"ocr\"}[$__rate_interval])",
+          "expr": "rate(ocr_web_process_cpu_system_seconds_total{job=\"ocr\"}[$__rate_interval])",
           "instant": false,
           "legendFormat": "system",
           "range": true,
@@ -1627,7 +1627,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "ocr_frontend_process_resident_memory_bytes{job=\"ocr\"}",
+          "expr": "ocr_web_process_resident_memory_bytes{job=\"ocr\"}",
           "instant": false,
           "legendFormat": "rss",
           "range": true,
@@ -1639,7 +1639,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "ocr_frontend_nodejs_heap_size_used_bytes{job=\"ocr\"}",
+          "expr": "ocr_web_nodejs_heap_size_used_bytes{job=\"ocr\"}",
           "instant": false,
           "legendFormat": "heap used",
           "range": true,
@@ -1651,7 +1651,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "ocr_frontend_nodejs_external_memory_bytes{job=\"ocr\"}",
+          "expr": "ocr_web_nodejs_external_memory_bytes{job=\"ocr\"}",
           "instant": false,
           "legendFormat": "external",
           "range": true,
@@ -1746,7 +1746,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "ocr_frontend_nodejs_eventloop_lag_seconds{job=\"ocr\"}",
+          "expr": "ocr_web_nodejs_eventloop_lag_seconds{job=\"ocr\"}",
           "instant": false,
           "legendFormat": "lag",
           "range": true,
@@ -1841,7 +1841,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum by (kind, le) (rate(ocr_frontend_nodejs_gc_duration_seconds_bucket{job=\"ocr\"}[$__rate_interval])))",
+          "expr": "histogram_quantile(0.95, sum by (kind, le) (rate(ocr_web_nodejs_gc_duration_seconds_bucket{job=\"ocr\"}[$__rate_interval])))",
           "instant": false,
           "legendFormat": "{{kind}}",
           "range": true,

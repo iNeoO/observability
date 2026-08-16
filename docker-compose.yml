@@ -79,21 +79,76 @@ services:
       GF_USERS_ALLOW_SIGN_UP: "false"
       GF_SERVER_DOMAIN: ${GRAFANA_DOMAIN:-localhost}
       GF_SERVER_ROOT_URL: ${GRAFANA_ROOT_URL:-http://localhost:5000}
+      GF_NEWS_NEWS_FEED_ENABLED: "false"
     networks:
       - observability
     volumes:
       - grafana-data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
       - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - ./grafana/overrides/index.html:/usr/share/grafana/public/views/index.html:ro
     depends_on:
       - prometheus
       - loki
+    restart: unless-stopped
+
+  sonarqube-db:
+    image: postgres:18-alpine
+    container_name: observability-sonarqube-db
+    environment:
+      POSTGRES_DB: ${SONARQUBE_JDBC_DATABASE:-sonarqube}
+      POSTGRES_USER: ${SONARQUBE_JDBC_USERNAME:-sonarqube}
+      POSTGRES_PASSWORD: ${SONARQUBE_JDBC_PASSWORD}
+    networks:
+      - observability
+    volumes:
+      - sonarqube-db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  sonarqube:
+    image: sonarqube:26.3.0.120487-community
+    container_name: observability-sonarqube
+    depends_on:
+      sonarqube-db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:5003:9000"
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://sonarqube-db:5432/${SONARQUBE_JDBC_DATABASE:-sonarqube}
+      SONAR_JDBC_USERNAME: ${SONARQUBE_JDBC_USERNAME:-sonarqube}
+      SONAR_JDBC_PASSWORD: ${SONARQUBE_JDBC_PASSWORD}
+    networks:
+      - observability
+    volumes:
+      - sonarqube-data:/opt/sonarqube/data
+      - sonarqube-extensions:/opt/sonarqube/extensions
+      - sonarqube-logs:/opt/sonarqube/logs
+    ulimits:
+      nofile:
+        soft: 131072
+        hard: 131072
+      nproc:
+        soft: 8192
+        hard: 8192
     restart: unless-stopped
 
 volumes:
   prometheus-data:
   loki-data:
   grafana-data:
+  sonarqube-db-data:
+    name: observability_sonarqube-db-data
+  sonarqube-data:
+    name: observability_sonarqube-data
+  sonarqube-extensions:
+    name: observability_sonarqube-extensions
+  sonarqube-logs:
+    name: observability_sonarqube-logs
 
 networks:
   observability:

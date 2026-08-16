@@ -48,7 +48,7 @@ Prometheus is configured to scrape:
 - Application metrics for:
   - `urlshortener` backend on `urlshortener-backend-prod:4000`
   - `urlshortener` redirector on `urlshortener-redirector-prod:4001`
-  - `ocr` application metrics from the frontend server on `ocr-frontend-prod:3010`
+  - `ocr` application metrics from the web server on `ocr-web-prod:3010`
   - `manga-reader` on `manga-reader-backend-prod:4030`
 
 ### Garage metrics token
