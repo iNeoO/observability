@@ -79,3 +79,9 @@ scrape_configs:
     static_configs:
       - targets:
           - manga-reader-backend-prod:4030
+
+  - job_name: brief
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - brief-web-prod:3000

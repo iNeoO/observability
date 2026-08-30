@@ -15,6 +15,7 @@ It includes pre-provisioned Grafana datasources and dashboards for the services 
 - [https://ocr.tuturu.io](https://ocr.tuturu.io) - [iNeoO/ocr](https://github.com/iNeoO/ocr)
 - [https://urlshortener.tuturu.io](https://urlshortener.tuturu.io) - [iNeoO/urlshortener](https://github.com/iNeoO/urlshortener)
 - [https://manga-reader.tuturu.io](https://manga-reader.tuturu.io) - [iNeoO/manga-reader](https://github.com/iNeoO/manga-reader)
+- [https://dailybriefs.fr](https://dailybriefs.fr) - [iNeoO/brief](https://github.com/iNeoO/brief)
 
 ## What Is Included
 
@@ -33,6 +34,7 @@ It includes pre-provisioned Grafana datasources and dashboards for the services 
 - `OCR Observability`
 - `Manga Reader Backend`
 - `Infra Overview (RabbitMQ / Redis / Garage)`
+- `Brief Observability`
 
 ## Metrics Targets
 
@@ -50,6 +52,7 @@ Prometheus is configured to scrape:
   - `urlshortener` redirector on `urlshortener-redirector-prod:4001`
   - `ocr` application metrics from the web server on `ocr-web-prod:3010`
   - `manga-reader` on `manga-reader-backend-prod:4030`
+  - `brief` application metrics from the web server on `brief-web-prod:3000`
 
 ### Garage metrics token
 
