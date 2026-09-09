@@ -117,6 +117,20 @@ docker compose up -d
 - Grafana: `http://localhost:5000`
 - Prometheus: `http://localhost:5001`
 - Loki: `http://localhost:5002`
+- SonarQube: `http://localhost:5003`
+
+## SonarQube Upgrade
+
+The `sonarqube-extensions` Docker volume can keep an older Community Branch
+Plugin JAR across image upgrades. After changing the SonarQube image tag, run:
+
+```bash
+./scripts/sync-sonarqube-plugin.sh
+```
+
+The script pulls the configured SonarQube image, extracts the bundled Community
+Branch Plugin JAR, archives older plugin JARs from the persistent extensions
+volume, copies the current plugin into place, and restarts SonarQube.
 
 ## Reverse Proxy
 

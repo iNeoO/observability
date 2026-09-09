@@ -111,7 +111,7 @@ services:
     restart: unless-stopped
 
   sonarqube:
-    image: sonarqube:26.3.0.120487-community
+    image: mc1arke/sonarqube-with-community-branch-plugin:26.5.0.122743-community
     container_name: observability-sonarqube
     depends_on:
       sonarqube-db:
