@@ -16,6 +16,7 @@ It includes pre-provisioned Grafana datasources and dashboards for the services 
 - [https://urlshortener.tuturu.io](https://urlshortener.tuturu.io) - [iNeoO/urlshortener](https://github.com/iNeoO/urlshortener)
 - [https://manga-reader.tuturu.io](https://manga-reader.tuturu.io) - [iNeoO/manga-reader](https://github.com/iNeoO/manga-reader)
 - [https://dailybriefs.fr](https://dailybriefs.fr) - [iNeoO/brief](https://github.com/iNeoO/brief)
+- `recettes` application
 
 ## What Is Included
 
@@ -35,6 +36,7 @@ It includes pre-provisioned Grafana datasources and dashboards for the services 
 - `Manga Reader Backend`
 - `Infra Overview (RabbitMQ / Redis / Garage)`
 - `Brief Observability`
+- `Recettes API Observability`
 
 ## Metrics Targets
 
@@ -53,15 +55,19 @@ Prometheus is configured to scrape:
   - `ocr` application metrics from the web server on `ocr-web-prod:3010`
   - `manga-reader` on `manga-reader-backend-prod:4030`
   - `brief` application metrics from the web server on `brief-web-prod:3000`
+  - `recettes` API metrics on `recettes-api-prod:3000`
 
 ### Garage metrics token
 
 The Garage scrape job authenticates with a bearer token read from
 `prometheus/secrets/garage-metrics-token` (gitignored). Copy the
 `metrics_token` value configured in `../infra/garage/garage.toml` into that
-file, then reload Prometheus:
+file. The Prometheus container runs as `nobody`, so the bind-mounted token must
+be readable by that user. Keep it writable only by its owner, then reload
+Prometheus:
 
 ```bash
+chmod 0644 prometheus/secrets/garage-metrics-token
 docker compose kill -s SIGHUP prometheus
 ```
 
